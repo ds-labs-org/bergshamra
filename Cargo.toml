@@ -125,7 +125,9 @@ kryptering = { version = "0.7.0", default-features = false }
 # Shared trust/validation infrastructure
 tsp-ltv = { version = "0.6.0", default-features = false }
 
-# ds-labs fork: kryptering with per-family RustCrypto features. A patch (not a
-# plain git dependency) so tsp-ltv resolves to the same kryptering.
+# ds-labs forks: kryptering with per-family RustCrypto features and tsp-ltv
+# with a matching `rustcrypto-verify` provider feature. Patches (not plain git
+# dependencies) so every crate resolves to the same copies.
 [patch.crates-io]
 kryptering = { git = "https://github.com/ds-labs-org/kryptering", branch = "claude/project-thread-utqien" }
+tsp-ltv = { git = "https://github.com/ds-labs-org/tsp-ltv", branch = "claude/project-thread-utqien" }

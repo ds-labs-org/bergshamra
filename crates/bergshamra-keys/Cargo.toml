@@ -13,13 +13,10 @@ default = ["rustcrypto", "legacy-algorithms", "post-quantum", "pkcs11"]
 # Key loading without PKCS#12, encrypted PKCS#8 (pkcs5/scrypt) or the
 # RustCrypto post-quantum crates. The small EdDSA/X25519/DSA/DH key types
 # stay, because `KeyData` variants are matched across the dsig/enc crates.
-# TODO(ds-labs): tsp-ltv only has an all-in-one `rustcrypto` provider
-# feature, which turns on every kryptering family again. Switch this to
-# `tsp-ltv/rustcrypto-verify` once tsp-ltv gains that feature.
 rustcrypto-verify = [
     "kryptering/rustcrypto-core",
     "bergshamra-crypto/rustcrypto-verify",
-    "tsp-ltv/rustcrypto",
+    "tsp-ltv/rustcrypto-verify",
     "dep:rsa",
     "dep:ecdsa",
     "dep:p256",
