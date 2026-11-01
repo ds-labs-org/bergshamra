@@ -10,7 +10,8 @@ description = "Transform pipeline for Bergshamra XML Security library"
 
 [features]
 default = ["rustcrypto", "legacy-algorithms", "post-quantum", "pkcs11"]
-rustcrypto = ["bergshamra-crypto/rustcrypto", "bergshamra-keys/rustcrypto"]
+rustcrypto-verify = ["bergshamra-crypto/rustcrypto-verify", "bergshamra-keys/rustcrypto-verify"]
+rustcrypto = ["rustcrypto-verify", "bergshamra-crypto/rustcrypto", "bergshamra-keys/rustcrypto"]
 aws-lc = ["bergshamra-crypto/aws-lc", "bergshamra-keys/aws-lc"]
 fips = ["aws-lc", "bergshamra-crypto/fips", "bergshamra-keys/fips"]
 legacy-algorithms = ["bergshamra-crypto/legacy-algorithms", "bergshamra-keys/legacy-algorithms"]
