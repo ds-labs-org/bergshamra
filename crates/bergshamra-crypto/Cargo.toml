@@ -13,6 +13,9 @@ default = ["rustcrypto", "legacy-algorithms", "post-quantum"]
 # Verify-oriented subset: RustCrypto digests, HMAC, RSA and NIST-curve ECDSA only.
 rustcrypto-verify = ["kryptering/rustcrypto-core"]
 rustcrypto = ["rustcrypto-verify", "kryptering/rustcrypto"]
+# Accept 2032-bit RSA keys for signature verification only (some EU trusted
+# lists still use them). Temporary; see kryptering `rsa-verify-2032`.
+rsa-verify-2032 = ["kryptering/rsa-verify-2032"]
 aws-lc = ["kryptering/aws-lc"]
 fips = ["aws-lc", "kryptering/fips"]
 legacy-algorithms = ["kryptering/legacy"]
