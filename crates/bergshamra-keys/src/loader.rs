@@ -243,10 +243,19 @@ fn load_private_key_pkcs8_der(der: &[u8]) -> Result<Key, Error> {
     Err(Error::Key("unable to parse PKCS#8 DER private key (tried RSA, P-256, P-384, P-521, DSA, DH, Ed25519, ML-DSA, SLH-DSA)".into()))
 }
 
+/// Load keys from a PKCS#12 (.p12/.pfx) file (stub: `pkcs12` feature off).
+#[cfg(not(feature = "pkcs12"))]
+pub fn load_pkcs12(_data: &[u8], _password: &str) -> Result<Key, Error> {
+    Err(Error::Key(
+        "PKCS#12 support is not compiled in (enable the `pkcs12` feature)".into(),
+    ))
+}
+
 /// Load keys from a PKCS#12 (.p12/.pfx) file.
 ///
 /// Returns the first private key found, with any X.509 certificates attached
 /// to the key's x509_chain.
+#[cfg(feature = "pkcs12")]
 pub fn load_pkcs12(data: &[u8], password: &str) -> Result<Key, Error> {
     let contents = bergshamra_pkcs12::parse_pkcs12(data, password)?;
 
@@ -263,6 +272,14 @@ pub fn load_pkcs12(data: &[u8], password: &str) -> Result<Key, Error> {
 ///
 /// Tries RSA first, then decrypts once and parses the plaintext PKCS#8
 /// (EC P-256/P-384/P-521, DSA and other key types).
+#[cfg(not(feature = "encrypted-pkcs8"))]
+fn load_encrypted_pem(_pem_data: &[u8], _password: &str) -> Result<Key, Error> {
+    Err(Error::Key(
+        "encrypted PKCS#8 is not compiled in (enable the `encrypted-pkcs8` feature)".into(),
+    ))
+}
+
+#[cfg(feature = "encrypted-pkcs8")]
 fn load_encrypted_pem(pem_data: &[u8], password: &str) -> Result<Key, Error> {
     use pkcs8::DecodePrivateKey;
     let pem_str = std::str::from_utf8(pem_data)

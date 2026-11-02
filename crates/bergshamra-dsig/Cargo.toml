@@ -10,7 +10,9 @@ description = "XML Digital Signatures for Bergshamra XML Security library"
 
 [features]
 default = ["rustcrypto", "legacy-algorithms", "post-quantum", "pkcs11"]
-rustcrypto = ["bergshamra-crypto/rustcrypto", "bergshamra-keys/rustcrypto", "bergshamra-transforms/rustcrypto", "kryptering/rustcrypto"]
+# Verify XML signatures with RSA, RSA-PSS, ECDSA P-256/384/521 and HMAC only.
+rustcrypto-verify = ["bergshamra-crypto/rustcrypto-verify", "bergshamra-keys/rustcrypto-verify", "bergshamra-transforms/rustcrypto-verify", "kryptering/rustcrypto-core"]
+rustcrypto = ["rustcrypto-verify", "bergshamra-crypto/rustcrypto", "bergshamra-keys/rustcrypto", "bergshamra-transforms/rustcrypto", "kryptering/rustcrypto"]
 aws-lc = ["bergshamra-crypto/aws-lc", "bergshamra-keys/aws-lc", "bergshamra-transforms/aws-lc", "kryptering/aws-lc"]
 fips = ["aws-lc", "bergshamra-crypto/fips", "bergshamra-keys/fips", "bergshamra-transforms/fips", "kryptering/fips"]
 post-quantum = ["bergshamra-crypto/post-quantum", "bergshamra-keys/post-quantum", "bergshamra-transforms/post-quantum", "kryptering/post-quantum"]

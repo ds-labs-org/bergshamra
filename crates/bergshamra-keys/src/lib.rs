@@ -12,16 +12,16 @@
 //! crate. This follows the same "thin facade" pattern used by underskrift
 //! (PDF signing library).
 
-#[cfg(feature = "rustcrypto")]
+#[cfg(feature = "rustcrypto-verify")]
 pub mod key;
-#[cfg(not(feature = "rustcrypto"))]
+#[cfg(not(feature = "rustcrypto-verify"))]
 #[path = "alternate/key.rs"]
 pub mod key;
 pub mod keyinfo;
 pub mod keysxml;
-#[cfg(feature = "rustcrypto")]
+#[cfg(feature = "rustcrypto-verify")]
 pub mod loader;
-#[cfg(not(feature = "rustcrypto"))]
+#[cfg(not(feature = "rustcrypto-verify"))]
 #[path = "alternate/loader.rs"]
 pub mod loader;
 pub mod manager;

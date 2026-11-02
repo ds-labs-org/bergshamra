@@ -10,23 +10,34 @@ description = "Key management for Bergshamra XML Security library"
 
 [features]
 default = ["rustcrypto", "legacy-algorithms", "post-quantum", "pkcs11"]
-rustcrypto = [
-    "kryptering/rustcrypto",
-    "bergshamra-crypto/rustcrypto",
-    "bergshamra-pkcs12/rustcrypto",
-    "tsp-ltv/rustcrypto",
-    "dep:ed25519-dalek",
-    "dep:x25519-dalek",
+# Key loading without PKCS#12, encrypted PKCS#8 (pkcs5/scrypt) or the
+# RustCrypto post-quantum crates. The small EdDSA/X25519/DSA/DH key types
+# stay, because `KeyData` variants are matched across the dsig/enc crates.
+rustcrypto-verify = [
+    "kryptering/rustcrypto-core",
+    "bergshamra-crypto/rustcrypto-verify",
+    "tsp-ltv/rustcrypto-verify",
     "dep:rsa",
     "dep:ecdsa",
-    "dep:dsa",
     "dep:p256",
     "dep:p384",
     "dep:p521",
     "dep:pkcs1",
+    "dep:signature",
+    "dep:ed25519-dalek",
+    "dep:x25519-dalek",
+    "dep:dsa",
     "dep:num-bigint-dig",
     "dep:num-traits",
-    "dep:signature",
+]
+pkcs12 = ["dep:bergshamra-pkcs12"]
+rustcrypto = [
+    "rustcrypto-verify",
+    "pkcs12",
+    "kryptering/rustcrypto",
+    "bergshamra-crypto/rustcrypto",
+    "bergshamra-pkcs12/rustcrypto",
+    "tsp-ltv/rustcrypto",
     # These crates are only used to derive public components while importing
     # PQ private keys into the RustCrypto adapter.  Merely enabling the
     # provider-neutral `post-quantum` URI/API surface with another provider
@@ -35,12 +46,12 @@ rustcrypto = [
     "dep:slh-dsa",
     "dep:pkcs8-pq",
     "dep:const-oid-pq",
-    "pkcs8/encryption",
-    "pkcs8/3des",
-    "pkcs8/sha1-insecure",
+    "encrypted-pkcs8",
 ]
-aws-lc = ["kryptering/aws-lc", "bergshamra-crypto/aws-lc", "bergshamra-pkcs12/aws-lc", "tsp-ltv/aws-lc"]
-fips = ["aws-lc", "kryptering/fips", "bergshamra-crypto/fips", "bergshamra-pkcs12/fips", "tsp-ltv/fips"]
+# Password-protected PKCS#8 PEM ("ENCRYPTED PRIVATE KEY").
+encrypted-pkcs8 = ["pkcs8/encryption", "pkcs8/3des", "pkcs8/sha1-insecure"]
+aws-lc = ["pkcs12", "kryptering/aws-lc", "bergshamra-crypto/aws-lc", "bergshamra-pkcs12/aws-lc", "tsp-ltv/aws-lc"]
+fips = ["aws-lc", "kryptering/fips", "bergshamra-crypto/fips", "bergshamra-pkcs12?/fips", "tsp-ltv/fips"]
 post-quantum = [
     "kryptering/post-quantum",
     "bergshamra-crypto/post-quantum",
@@ -51,7 +62,7 @@ pkcs11 = ["kryptering/pkcs11", "bergshamra-crypto/pkcs11"]
 # (strict, fail-closed). See `x509::cert_signature_policy`.
 legacy-algorithms = [
     "bergshamra-crypto/legacy-algorithms",
-    "bergshamra-pkcs12/legacy-algorithms",
+    "bergshamra-pkcs12?/legacy-algorithms",
     "tsp-ltv/legacy-algorithms",
 ]
 
@@ -77,7 +88,7 @@ spki.workspace = true
 der.workspace = true
 pem-rfc7468.workspace = true
 x509-cert.workspace = true
-bergshamra-pkcs12.workspace = true
+bergshamra-pkcs12 = { workspace = true, optional = true }
 base64.workspace = true
 num-bigint-dig = { workspace = true, optional = true }
 num-traits = { workspace = true, optional = true }
