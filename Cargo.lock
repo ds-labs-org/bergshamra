@@ -1449,7 +1449,7 @@ dependencies = [
 [[package]]
 name = "kryptering"
 version = "0.7.0"
-source = "git+https://github.com/ds-labs-org/kryptering?branch=claude%2Fproject-thread-utqien#fc9ee8c28da44cf0dfdba5a6fd8a67727e7152f1"
+source = "git+https://github.com/ds-labs-org/kryptering?branch=claude%2Fproject-thread-utqien#5c5e9cb91dc7aa4d5d2be3ca2eb6e5a90d0d030a"
 dependencies = [
  "aes 0.9.2",
  "aes-gcm",
